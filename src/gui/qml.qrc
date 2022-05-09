@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>MainWindow.qml</file>
-        <file>imgs/logo.png</file>
-        <file>imgs/icons/config.png</file>
-        <file>imgs/icons/connection.png</file>
-        <file>imgs/icons/control.png</file>
-    </qresource>
-</RCC>

@@ -15,14 +15,14 @@ bool TcpServer::listen(const QHostAddress &address, quint16 port)
     if(!QTcpServer::listen(address,port)) return false;
 
     m_thread = new QThread(this);
-    m_connections = new TcpConnections();
+    Connections = new TcpConnections();
 
-    connect(m_thread,&QThread::started,m_connections,&TcpConnections::start, Qt::QueuedConnection);
-    connect(this, &TcpServer::accepting,m_connections,&TcpConnections::accept, Qt::QueuedConnection);
-    connect(this,&TcpServer::finished,m_connections,&TcpConnections::quit, Qt::QueuedConnection);
-    connect(m_connections,&TcpConnections::finished,this,&TcpServer::complete, Qt::QueuedConnection);
+    connect(m_thread, &QThread::started, Connections, &TcpConnections::start, Qt::QueuedConnection);
+    connect(this, &TcpServer::accepting, Connections, &TcpConnections::accept, Qt::QueuedConnection);
+    connect(this, &TcpServer::finished, Connections, &TcpConnections::quit, Qt::QueuedConnection);
+    connect(Connections, &TcpConnections::finished, this, &TcpServer::complete, Qt::QueuedConnection);
 
-    m_connections->moveToThread(m_thread);
+    Connections->moveToThread(m_thread);
     m_thread->start();
 
     return true;
@@ -50,12 +50,12 @@ qint64 TcpServer::port()
 void TcpServer::incomingConnection(qintptr descriptor)
 {
     qDebug() << this << "attempting to accept connection" << descriptor;
-    TcpConnecton *connection = new TcpConnecton();
+    TcpConnection *connection = new TcpConnection();
     accept(descriptor, connection);
 
 }
 
-void TcpServer::accept(qintptr descriptor, TcpConnecton *connection)
+void TcpServer::accept(qintptr descriptor, TcpConnection *connection)
 {
     qDebug() << this << "accepting the connection" << descriptor;
     connection->moveToThread(m_thread);
@@ -71,7 +71,7 @@ void TcpServer::complete()
     }
 
     qDebug() << this << "Complete called, destroying thread";
-    delete m_connections;
+    delete Connections;
 
     qDebug() << this << "Quitting thread";
     m_thread->quit();

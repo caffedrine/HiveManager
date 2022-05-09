@@ -7,7 +7,7 @@
 #include <QTcpSocket>
 #include <QMap>
 #include <QReadWriteLock>
-#include "tcpconnecton.h"
+#include "tcpconnection.h"
 
 
 class TcpConnections : public QObject
@@ -20,7 +20,7 @@ public:
     virtual int count();
 
 protected:
-    QMap<QTcpSocket*, TcpConnecton*> m_connections;
+    QMap<QTcpSocket*, TcpConnection*> m_connections;
     void removeSocket(QTcpSocket *socket);
 
 signals:
@@ -32,10 +32,9 @@ protected slots:
     void error(QAbstractSocket::SocketError socketError);
 
 public slots:
-
     void start();
     void quit();
-    void accept(qintptr handle, TcpConnecton *connection);
+    void accept(qintptr handle, TcpConnection *connection);
 };
 
 #endif // TCPCONNECTIONS_H

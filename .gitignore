@@ -1,5 +1,5 @@
 build/*
 *.user
 *~
-
+*logs.log
 !build/Deploy/

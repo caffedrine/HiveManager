@@ -6,7 +6,7 @@
 #include <QTcpServer>
 #include <QThread>
 #include "tcpconnections.h"
-#include "tcpconnecton.h"
+#include "tcpconnection.h"
 
 class TcpServer : public QTcpServer
 {
@@ -22,12 +22,13 @@ public:
 
 protected:
     QThread *m_thread;
-    TcpConnections *m_connections;
+    TcpConnections *Connections;
+
     virtual void incomingConnection(qintptr descriptor); //qint64, qHandle, qintptr, uint
-    virtual void accept(qintptr descriptor, TcpConnecton *connection);
+    virtual void accept(qintptr descriptor, TcpConnection *connection);
 
 signals:
-    void accepting(qintptr handle, TcpConnecton *connection);
+    void accepting(qintptr handle, TcpConnection *connection);
     void finished();
 
 public slots:
