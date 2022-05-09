@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     this->hivesManager = new HivesConnectionsManager();
     connect(hivesManager, SIGNAL(ActiveConnectionsCountChanged(quint32)), this, SLOT(TcpConnections_OnCountChanged(quint32)));
-    connect(hivesManager, SIGNAL(OnDataPacketAvailable(QHostAddress&,QByteArray&)), this, SLOT(TcpConnections_OnDataAvailable(QHostAddress&,QByteArray&)));
+    connect(hivesManager, SIGNAL(OnDataPacketAvailable(const QHostAddress &, const QByteArray &)), this, SLOT(TcpConnections_OnDataAvailable(const QHostAddress&,const QByteArray&)));
 }
 
 MainWindow::~MainWindow()
@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_StartServer_clicked()
 {
-    //this->hivesManager.StartListen(QHostAddress(this->ui->lineEdit_IpAddress->text()), this->ui->lineEdit_Port->text().toInt());
+    this->hivesManager->StartListen(QHostAddress(this->ui->lineEdit_IpAddress->text()), this->ui->lineEdit_Port->text().toInt());
     this->ui->label_ServerStatus->setText("Server status: STARTED");
     this->ui->pushButton_StartServer->setDisabled(true);
     this->ui->pushButton_StopServer->setDisabled(false);
@@ -30,7 +30,7 @@ void MainWindow::on_pushButton_StartServer_clicked()
 
 void MainWindow::on_pushButton_StopServer_clicked()
 {
-    //this->hivesManager.StopListen();
+    this->hivesManager->StopListen();
 
     this->ui->label_ServerStatus->setText("Server status: STOPPED");
     this->ui->pushButton_StartServer->setDisabled(false);
@@ -57,6 +57,7 @@ void MainWindow::TcpConnections_OnCountChanged(quint32 count)
 
 void MainWindow::TcpConnections_OnDataAvailable(const QHostAddress& clientSource, const QByteArray& data)
 {
-    this->ui->plainTextEdit_Logs->appendPlainText("[" + clientSource.toString() + "] " + data);
+    qDebug() << "Data available";
+    this->ui->plainTextEdit_Logs->appendPlainText("[" + clientSource.toString() + "] " + QString(data));
 }
 
