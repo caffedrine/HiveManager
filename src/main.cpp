@@ -1,25 +1,30 @@
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include "gui/MainWindow.h"
+
+#include <QApplication>
+#include <QDebug>
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+#include "core/Logger.h"
 
 int main(int argc, char *argv[])
 {
-    // To disable blury text and elements on windows
-    qputenv("QML_DISABLE_DISTANCEFIELD", "1");
+    QApplication a(argc, argv);
+    MainWindow w;
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    // Show debug info when app is executed from console
+#ifdef _WIN32
+    /// https://stackoverflow.com/questions/3360548/console-output-in-a-qt-gui-app
+    if (AttachConsole(ATTACH_PARENT_PROCESS))
+    {
+        freopen("CONOUT$", "w", stdout);
+        freopen("CONOUT$", "w", stderr);
+    }
 #endif
-    QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/MainWindow.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl)
-                     {
-                         if(!obj && url == objUrl)
-                             QCoreApplication::exit(-1);
-                     }, Qt::QueuedConnection);
-    engine.load(url);
+    setup_logger();
+    logger->info("App started...");
 
-    return app.exec();
+    w.show();
+    return a.exec();
 }

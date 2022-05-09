@@ -84,7 +84,7 @@ void TcpConnections::quit()
     emit finished();
 }
 
-void TcpConnections::accept(qintptr handle, TcpConnecton *connection)
+void TcpConnections::accept(qintptr handle, TcpConnection *connection)
 {
     qDebug() << "*** HEY WATCH THIS";
     QTcpSocket *socket = new QTcpSocket(this);
@@ -100,7 +100,7 @@ void TcpConnections::accept(qintptr handle, TcpConnecton *connection)
     // connect(socket,static_cast<void (QTcpSocket::*)(QAbstractSocket::SocketError)>(&QTcpSocket::error),this,&TcpConnections::error);
 
     connect(socket,&QTcpSocket::disconnected, this, &TcpConnections::disconnected);
-    connect(socket,static_cast<void (QTcpSocket::*)(QAbstractSocket::SocketError)>(&QTcpSocket::error),this,&TcpConnections::error);
+    //connect(socket, &QTcpSocket::error,this, error(QAbstractSocket::SocketError));
 
     connection->moveToThread(QThread::currentThread());
     connection->setSocket(socket);

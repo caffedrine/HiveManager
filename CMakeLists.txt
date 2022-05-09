@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.5)
 
-project(HiveManager VERSION 0.1 LANGUAGES CXX C)
+project(HiveManager VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -11,17 +11,26 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick Widgets Network)
+set(QT_ASSUME_STDERR_HAS_CONSOLE=1)
 
+find_package(QT NAMES Qt6 Qt5)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Network)
+
+# Thirdparty libs
 include("thirdparty/thirdparty_dependencies.cmake")
 
+# Include SRC directory
 include_directories("src")
+include_directories("src/services")
 
 set(PROJECT_SOURCES
         src/main.cpp
+        src/app/HivesConnectionsManager.cpp
+        src/core/Logger.cpp
+        src/services/TcpServerM/TcpServerM.cpp
         src/gui/MainWindow.cpp
-        src/gui/qml.qrc
+        src/gui/MainWindow.h
+        src/gui/MainWindow.ui
         ${THIRD_PARTY_SRC}
 )
 
@@ -30,7 +39,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         ${THIRD_PARTY_SRC}
-)
+    )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET HiveManager APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
@@ -45,8 +54,8 @@ else()
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(HiveManager
-          ${PROJECT_SOURCES}
-          ${THIRD_PARTY_SRC}
+            ${PROJECT_SOURCES}
+            ${THIRD_PARTY_SRC}
         )
     endif()
 endif()
@@ -54,7 +63,6 @@ endif()
 target_link_libraries(HiveManager PRIVATE
   ${THIRD_PARTY_LIBS}
   Qt${QT_VERSION_MAJOR}::Core
-  Qt${QT_VERSION_MAJOR}::Quick
   Qt${QT_VERSION_MAJOR}::Widgets
   Qt${QT_VERSION_MAJOR}::Network
 )
@@ -68,6 +76,5 @@ set_target_properties(HiveManager PROPERTIES
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_import_qml_plugins(HiveManager)
     qt_finalize_executable(HiveManager)
 endif()
