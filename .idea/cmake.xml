@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSharedSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" GENERATION_DIR="build/Debug" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DCMAKE_PREFIX_PATH=C:/Qt/6.3.0/mingw_64/lib/cmake -DCMAKE_BUILD_TYPE=Debug" BUILD_OPTIONS="-j8" />
+      <configuration PROFILE_NAME="Release" ENABLED="true" GENERATION_DIR="build/Release" CONFIG_NAME="Release" GENERATION_OPTIONS="-DCMAKE_PREFIX_PATH=C:/Qt/6.3.0/mingw_64/lib/cmake -DCMAKE_BUILD_TYPE=Release" BUILD_OPTIONS="-j8" />
+    </configurations>
+  </component>
+</project>
