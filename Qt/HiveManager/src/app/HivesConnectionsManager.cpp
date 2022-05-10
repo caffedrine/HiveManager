@@ -29,21 +29,27 @@ void HivesConnectionsManager::StopListen()
 
 void HivesConnectionsManager::TcpClientConnected(QTcpSocket *client)
 {
-    qInfo().noquote().nospace() << "[TCP SERVER] Client " << client->localAddress() << " connected";
+    qInfo().noquote().nospace() << "[TCP SERVER] Client " << client->localAddress().toString() << " connected";
     emit this->ActiveConnectionsCountChanged(this->tcpServer.GetConnectionsCount());
 }
 
 void HivesConnectionsManager::TcpClientDisconnected(QTcpSocket *client)
 {
-    qInfo().noquote().nospace() << "[TCP SERVER] Client " << client->localAddress() << " disconnected";
+    qInfo().noquote().nospace() << "[TCP SERVER] Client " << client->localAddress().toString() << " disconnected";
     emit this->ActiveConnectionsCountChanged(this->tcpServer.GetConnectionsCount());
 }
 
 void HivesConnectionsManager::TcpClientDataReception(QTcpSocket *client)
 {
-    qInfo().noquote().nospace() << "[TCP SERVER] Available to read " << client->bytesAvailable() << " bytes from client " << client->peerAddress();
+    qInfo().noquote().nospace() << "[TCP SERVER] Available to read " << client->bytesAvailable() << " bytes from client " << client->peerAddress().toString();
     QByteArray data = client->readAll().trimmed();
     QString hiveAddress = client->peerAddress().toString();
+
+    // Do not propagate white characters to upper layers
+    if( data.isEmpty() )
+    {
+        return;
+    }
 
     emit this->OnDataPacketAvailable(  hiveAddress, data );
 
@@ -61,7 +67,7 @@ void HivesConnectionsManager::SendDataToCloud(const QString &client, const QByte
 
 void HivesConnectionsManager::Http_RequestStarted(const QString &requestMethod, const QNetworkRequest *request, const QByteArray &requestBody) const
 {
-    qInfo().nospace().noquote() << "[CLOUD HTTP REQUEST - START] " << requestMethod << " " << request->url();
+    qInfo().nospace().noquote() << "[CLOUD HTTP REQUEST - START] " << requestMethod << " " << request->url().toString();
 }
 
 void HivesConnectionsManager::Http_RequestReturnedError(const HttpWebRequestsResponse *response) const
@@ -71,5 +77,5 @@ void HivesConnectionsManager::Http_RequestReturnedError(const HttpWebRequestsRes
 
 void HivesConnectionsManager::Http_RequestFinished(const HttpWebRequestsResponse *response) const
 {
-    qInfo().nospace().noquote() << "[CLOUD HTTP REQUEST - FINISH] " << response->HttpCode << " " << response->reply->url();
+    qInfo().nospace().noquote() << "[CLOUD HTTP REQUEST - FINISH] " << response->HttpCode << " " << response->reply->url().toString();
 }
