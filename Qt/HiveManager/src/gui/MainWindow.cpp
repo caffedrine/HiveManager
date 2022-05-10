@@ -9,7 +9,10 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     this->hivesManager = new HivesConnectionsManager();
     connect(hivesManager, SIGNAL(ActiveConnectionsCountChanged(quint32)), this, SLOT(TcpConnections_OnCountChanged(quint32)));
-    connect(hivesManager, SIGNAL(OnDataPacketAvailable(const QHostAddress &, const QByteArray &)), this, SLOT(TcpConnections_OnDataAvailable(const QHostAddress&,const QByteArray&)));
+    connect(hivesManager, SIGNAL(OnDataPacketAvailable(const QString &, const QByteArray &)), this, SLOT(TcpConnections_OnDataAvailable(const QString&,const QByteArray&)));
+
+    // Read local address
+
 }
 
 MainWindow::~MainWindow()
@@ -55,9 +58,8 @@ void MainWindow::TcpConnections_OnCountChanged(quint32 count)
     this->ui->label_ServerStatus->setText("Server status: STARTED, clients connected " + QString::number(count));
 }
 
-void MainWindow::TcpConnections_OnDataAvailable(const QHostAddress& clientSource, const QByteArray& data)
+void MainWindow::TcpConnections_OnDataAvailable(const QString& clientSource, const QByteArray& data)
 {
-    qDebug() << "Data available";
-    this->ui->plainTextEdit_Logs->appendPlainText("[" + clientSource.toString() + "] " + QString(data));
+    this->ui->plainTextEdit_Logs->appendPlainText("[" + clientSource + "] " + QString(data));
 }
 

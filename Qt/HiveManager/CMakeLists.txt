@@ -27,7 +27,8 @@ set(PROJECT_SOURCES
         src/main.cpp
         src/app/HivesConnectionsManager.cpp
         src/core/Logger.cpp
-        src/services/TcpServerM/TcpServerM.cpp
+        src/services/Tcp/TcpServerM.cpp
+        src/services/Http/HttpWebRequest.cpp
         src/gui/MainWindow.cpp
         src/gui/MainWindow.h
         src/gui/MainWindow.ui

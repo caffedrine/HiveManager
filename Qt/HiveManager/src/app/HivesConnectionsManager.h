@@ -5,7 +5,8 @@
 #include <QObject>
 #include <QTimer>
 #include <QHostAddress>
-#include "TcpServerM/TcpServerM.h"
+#include "services/Tcp/TcpServerM.h"
+#include "services/Http/HttpWebRequest.h"
 
 class HivesConnectionsManager: public QObject
 {
@@ -21,15 +22,22 @@ protected:
 
 private:
     TcpServerM tcpServer;
+    HttpWebRequest cloudHttp;
+
+    void SendDataToCloud(const QString &client, const QByteArray &data);
 
 private slots:
     void TcpClientConnected(QTcpSocket *client);
     void TcpClientDisconnected(QTcpSocket *client);
     void TcpClientDataReception(QTcpSocket *client);
 
+    void Http_RequestStarted(const QString &requestMethod, const QNetworkRequest *request, const QByteArray &requestBody) const;
+    void Http_RequestFinished(const HttpWebRequestsResponse *response) const;
+    void Http_RequestReturnedError(const HttpWebRequestsResponse *response) const;
+
 signals:
     void ActiveConnectionsCountChanged(quint32 count);
-    void OnDataPacketAvailable(const QHostAddress &client, const QByteArray &data);
+    void OnDataPacketAvailable(const QString &client, const QByteArray &data);
 
 };
 
