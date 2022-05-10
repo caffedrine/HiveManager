@@ -42,7 +42,7 @@ void HivesConnectionsManager::TcpClientDisconnected(QTcpSocket *client)
 void HivesConnectionsManager::TcpClientDataReception(QTcpSocket *client)
 {
     qInfo().noquote().nospace() << "[TCP SERVER] Available to read " << client->bytesAvailable() << " bytes from client " << client->peerAddress();
-    QByteArray data = client->readAll();
+    QByteArray data = client->readAll().trimmed();
     QString hiveAddress = client->peerAddress().toString();
 
     emit this->OnDataPacketAvailable(  hiveAddress, data );
@@ -53,8 +53,8 @@ void HivesConnectionsManager::TcpClientDataReception(QTcpSocket *client)
 
 void HivesConnectionsManager::SendDataToCloud(const QString &client, const QByteArray &data)
 {
-    QString url = "https://stupar.254.ro/add";
-    url += "?client=" + client;
+    QString url = "https://stupar.254.ro/add.php";
+    url += "?stup_id=" + client;
     url += "&data=" + QString(data.toBase64());
     this->cloudHttp.GET(url);
 }
