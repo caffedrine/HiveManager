@@ -24,7 +24,7 @@ class MainWindow : public QMainWindow
         void on_pushButton_SaveSettings_clicked();
         void on_pushButton_ClearLogs_clicked();
         void TcpConnections_OnCountChanged(quint32 count);
-        void TcpConnections_OnDataAvailable(const QHostAddress& client, const QByteArray& data);
+        void TcpConnections_OnDataAvailable(const QString& client, const QByteArray& data);
 
     private:
         Ui::MainWindow *ui;

@@ -22,11 +22,14 @@ bool TcpServerM::StartListening(const QHostAddress &addr, quint16 port)
 
 void TcpServerM::StopListening()
 {
-    for(QTcpSocket *socket: this->clients)
+    if( !this->clients.empty() )
     {
-        socket->close();
+        for(QTcpSocket *socket: this->clients)
+        {
+            socket->close();
+        }
+        this->clients.clear();
     }
-    this->clients.clear();
 
     this->server.close();
 }
