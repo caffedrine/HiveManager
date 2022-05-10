@@ -82,11 +82,14 @@ void HttpWebRequest::onNetworkReplyFinished(QNetworkReply *networkReply) const
     response.responseBody = networkReply->readAll();
 
     // no error in request
-    if(networkReply->error() == QNetworkReply::NoError)
+    if(networkReply->attribute( QNetworkRequest::HttpStatusCodeAttribute ).isValid())
     {
         // get HTTP status code
         qint32 httpStatusCode = networkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         response.HttpCode = httpStatusCode;
+        response.HttpCodeDesc = networkReply->attribute( QNetworkRequest::HttpReasonPhraseAttribute ).toString();
+        if( response.HttpCodeDesc.isEmpty() )
+            response.HttpCodeDesc = HttpStatus::reasonPhrase((int)response.HttpCode);
 
         // 200
         if(httpStatusCode >= 200 && httpStatusCode < 300) // OK
@@ -112,13 +115,13 @@ void HttpWebRequest::onNetworkReplyFinished(QNetworkReply *networkReply) const
         else if(httpStatusCode >= 400 && httpStatusCode <= 600) // 400 Error
         {
             response.HttpErrorDetected = true;
-            response.HttpErrorDescription = networkReply->attribute( QNetworkRequest::HttpReasonPhraseAttribute ).toString();
+            response.HttpErrorDescription = QString::number(httpStatusCode) + " " + response.HttpCodeDesc;
             emit this->RequestReturnedError(&response);
         }
         else
         {
             response.HttpErrorDetected = true;
-            response.HttpErrorDescription = "Invalid response code";
+            response.HttpErrorDescription = "Invalid response code " + QString::number(httpStatusCode);
             emit this->RequestReturnedError(&response);
         }
     }

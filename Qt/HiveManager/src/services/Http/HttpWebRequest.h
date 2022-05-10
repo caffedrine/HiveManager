@@ -12,6 +12,7 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
+#include "HttpStatusCodes.h"
 
 class HttpWebRequestsResponse
 {
@@ -26,6 +27,8 @@ public:
     QString AppErrorDesc = "";
 
     quint32 HttpCode;
+    QString HttpCodeDesc;
+
     bool Redirected = false;
     QNetworkReply *reply;
     QByteArray responseBody;
