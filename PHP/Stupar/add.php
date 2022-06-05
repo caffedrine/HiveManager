@@ -1,12 +1,15 @@
 <?php
 
-require_once "include/PrimitiveUtils.php";
+require_once "./appl/config.php";
+require_once CORE_INCLUDE_PATH  . "/generic/PrimitiveUtils.php";
+require_once CORE_DATABASE_PATH . "/Database.php";
+require_once APPL_DATABASE_PATH . "/Database.hives.php";
 
 // Check if GET/POST data exists
 if( empty($_GET['stup_id']) || empty($_GET['data']) )
 {
     http_response_code(405);
-    die("");
+    die("No data set");
 }
 
 // Check if file with logs for today exists

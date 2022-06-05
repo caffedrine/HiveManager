@@ -1,6 +1,9 @@
 <?php
 
-require_once "include/PrimitiveUtils.php";
+require_once "./appl/config.php";
+require_once CORE_INCLUDE_PATH . "/generic/PrimitiveUtils.php";
+require_once CORE_DATABASE_PATH . "/Database.php";
+require_once APPL_DATABASE_PATH . "/Database.hives.php";
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
