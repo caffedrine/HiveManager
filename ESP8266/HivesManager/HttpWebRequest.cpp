@@ -57,6 +57,8 @@ HttpWebResponse HttpWebRequest::GET()
 	HttpWebResponse response;
 	response.HttpCode = (t_http_codes)http.GET();
 	response.responseString = http.getString().substring(0, 1024);
+	if( response.responseString.length() == 1024 )
+		response.responseString += "...(output chunked!!!)";
 
 	http.end();
 

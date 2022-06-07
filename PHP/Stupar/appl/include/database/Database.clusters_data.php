@@ -2,11 +2,13 @@
 
 namespace Db\Table\DataTypes
 {
-    class hive_clusters_t
+    class clusters_data_t
     {
         public ?int $id = null;
-        public string $title;
-        public string $description;
+        public string $datetime;
+        public int $cluster_sensor_id;
+        public int $voltage_mv;
+        public int $humidity_rh;
     }
 }
 
@@ -14,7 +16,7 @@ namespace Db\Table
 {
     use Db\Database;
 
-    class hive_clusters extends Database
+    class clusters_data extends Database
     {
         private static $instance = null;
 

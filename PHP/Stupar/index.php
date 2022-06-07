@@ -1,14 +1,12 @@
 <?php 
 
+require_once "header.php";
+
 // Get database files
 $files = glob("data/*.txt", null);
 
 ?>
 
-<html>
-<head>
-    <title>Vizualizare stupar</title>
-</head>
 <body>
 <h1>Date stupi</h1>
     <ul>
@@ -24,4 +22,6 @@ $files = glob("data/*.txt", null);
     </ul>
 </body>
 
-</html>
+<?php
+require_once "footer.php";
+?>

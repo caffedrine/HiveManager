@@ -2,16 +2,14 @@
 
 namespace Db\Table\DataTypes
 {
-    class hives_t
+    class clusters_t
     {
         public ?int $id = null;
-        public string $serial_number = "";
-        public int $cluster_id;
-        public float $coords_lat = 0;
-        public float $coords_long = 0;
-        public string $board_version = "";
-        public int $owner_uid = -1;
-        public string $tags = "";
+        public string $title;
+        public string $description;
+        public float $coord_lat;
+        public float $coord_long;
+        public int $owner_uid;
     }
 }
 
@@ -19,7 +17,7 @@ namespace Db\Table
 {
     use Db\Database;
 
-    class hives extends Database
+    class clusters extends Database
     {
         private static $instance = null;
 

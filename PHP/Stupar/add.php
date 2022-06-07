@@ -3,7 +3,7 @@
 require_once "./appl/config.php";
 require_once CORE_INCLUDE_PATH  . "/generic/PrimitiveUtils.php";
 require_once CORE_DATABASE_PATH . "/Database.php";
-require_once APPL_DATABASE_PATH . "/Database.hives.php";
+require_once APPL_DATABASE_PATH . "/Database.hives_sensors.php";
 
 // Check if GET/POST data exists
 if( empty($_GET['stup_id']) || empty($_GET['data']) )
