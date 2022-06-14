@@ -1,0 +1,38 @@
+#page-body
+{
+    position: relative;
+    z-index: 1;
+}
+
+#svg1
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+#wing1 {
+    transform-origin: bottom  left;
+    transform-box: fill-box;
+    opacity:0.6;
+    animation: rotateBox1 .15s  infinite;
+}
+
+@keyframes rotateBox1 {
+    0%{ transform:rotate(0deg); }
+    50%{ transform:rotate(-60deg); }
+    0%{ transform:rotate(0deg); }
+}
+#wing2 {
+    transform-origin: bottom  left;
+    transform-box: fill-box;
+    opacity:0.75;
+    animation: rotateBox2 .15s  infinite;
+}
+
+@keyframes rotateBox2 {
+    0%{ transform:rotate(0deg); }
+    50%{ transform:rotate(30deg); }
+    0%{ transform:rotate(0deg); }
+}
