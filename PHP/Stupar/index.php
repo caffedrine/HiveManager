@@ -1,14 +1,15 @@
-<?php 
+<?php require_once "header.php";?>
 
-require_once "header.php";
 
+
+<?php
 // Get database files
 $files = glob("data/*.txt", null);
 
 ?>
 
-<body>
-<h1>Date stupi</h1>
+<div>
+    <h1>Date stupi</h1>
     <ul>
         <?php
             foreach ($files as $file)
@@ -20,8 +21,7 @@ $files = glob("data/*.txt", null);
             }
         ?>
     </ul>
-</body>
+</div>
 
-<?php
-require_once "footer.php";
-?>
+
+<?php require_once "footer.php"; ?>
