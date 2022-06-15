@@ -33,5 +33,10 @@ namespace Db\Table
             }
             return self::$instance;
         }
+
+        public function GetBySensorID(int $sensor_id)
+        {
+            return $this->GetRecordsByKeyVal("hive_sensor_id", $sensor_id);
+        }
     }
 }

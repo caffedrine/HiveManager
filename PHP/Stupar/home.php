@@ -1,23 +1,40 @@
 <?php require_once "header.php";?>
 
-
-
 <?php
-// Get database files
-$files = glob("data/*.txt", null);
-
+    require_once APPL_DATABASE_PATH . "/Database.hives_sensors.php";
+    require_once APPL_DATABASE_PATH . "/Database.clusters_sensors.php";
+    require_once APPL_DATABASE_PATH . "/Database.clusters.php";
 ?>
 
-<div>
-    <h1>Date stupi</h1>
+<div class="mt-4 pl-4">
+    <h1>Senzori ambientali:</h1>
     <ul>
         <?php
-            foreach ($files as $file)
-            {
-                $file_name = str_replace("data/", "", $file);
-                $date = str_replace(".txt", "", $file_name);
+        $sensors = Db\Table\clusters_sensors::getInstance()->GetAllRecordsOrdered();
 
-               echo "<li><a href='view.php?date={$date}'>$date</a></li>\n";
+        if( !empty($sensors) )
+        {
+            /** @var $sensor Db\Table\DataTypes\clusters_sensors_t */
+            foreach($sensors  as $sensor)
+            {
+                echo "<li>{$sensor->serial_number} (" . Db\Table\clusters::getInstance()->GetRecordById($sensor->cluster_id)->title . ")</li>\n";
+            }
+        }
+        ?>
+    </ul>
+
+    <h1>Senzori stupi:</h1>
+    <ul>
+        <?php
+            $sensors = Db\Table\hives_sensors::getInstance()->GetAllRecordsOrdered();
+
+            if( !empty($sensors) )
+            {
+                /** @var $sensor Db\Table\DataTypes\hives_sensors_t */
+                foreach($sensors  as $sensor)
+                {
+                   echo "<li><a href='view-sensor?serial_number={$sensor->serial_number}'>{$sensor->serial_number}</a> (" . Db\Table\clusters::getInstance()->GetRecordById($sensor->cluster_id)->title . ")</li>\n";
+                }
             }
         ?>
     </ul>
