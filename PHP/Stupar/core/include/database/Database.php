@@ -1486,6 +1486,8 @@ namespace Db
             }
             catch (Exception $e)
             {
+                var_dump($e);
+
                 $log_description = sprintf("[DB Internal Logger] Failed to add new system logs to database (database connection dead or something worst?): \n<b>INPUT</b>:\n%s \n<b>EXCEPTION</b>:\n$e", self::ObjectStr($log));
                 /// TODO: If this point is reached, then database is down or something bad happened. Handle this somehow...write to a file?
                 if( defined('DEBUG') && (DEBUG === true) )

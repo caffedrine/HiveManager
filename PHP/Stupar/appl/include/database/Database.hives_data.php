@@ -7,7 +7,7 @@ namespace Db\Table\DataTypes
         public ?int $id = null;
         public string $datetime;
         public int $hive_sensor_id;
-        public int $voltage_mv;
+        public int $volts_mv;
         public int $weight_gm;
     }
 }
