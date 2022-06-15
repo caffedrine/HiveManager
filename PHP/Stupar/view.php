@@ -1,83 +1,46 @@
 <?php
+require_once "header.php";
 
-require_once "./appl/config.php";
-require_once CORE_INCLUDE_PATH . "/generic/PrimitiveUtils.php";
-require_once CORE_DATABASE_PATH . "/Database.php";
+require_once CORE_INCLUDE_PATH  . "/generic/PrimitiveUtils.php";
 require_once APPL_DATABASE_PATH . "/Database.hives_sensors.php";
+require_once APPL_DATABASE_PATH . "/Database.hives_data.php";
+require_once APPL_DATABASE_PATH . "/Database.clusters.php";
+require_once APPL_DATABASE_PATH . "/Database.clusters_data.php";
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (empty($_GET['date']) || !Utils_IsValidDateTimeString($_GET['date']) )
+if( empty($_GET["serial_number"]) || strlen($_GET["serial_number"]) != 10 )
 {
-    http_response_code(405);
-    die("Invalid or not date provided");
+    die("invalid sensor serial number");
 }
-$date = $_GET['date'];
-$file = 'data/' . $date . '.txt';
 
+$sensor = Db\Table\hives_sensors::getInstance()->GetBySerialNumber($_GET["serial_number"]);
+if( $sensor === null )
+{
+    die("sensor not found in database");
+}
+
+$sensor_data = Db\Table\hives_data::getInstance()->GetBySensorID($sensor->id);
 ?>
 
-<html>
-    <head>
-        <title>Vizualizare date <?=$date?></title>
-    </head>
-<body>
-<h1>Raport <?=$date?></h1>
-<pre id="feed"></pre>
-<script type="text/javascript">
-    var refreshtime=100;
-    function tc()
-    {
-        asyncAjax("GET","<?=$file?>",Math.random(),display,{});
-        setTimeout(tc,refreshtime);
-    }
-    function display(xhr,cdat)
-    {
-        if( typeof prevText == 'undefined' ) {
-            prevText = "";
-        }
-
-        if(xhr.readyState===4 && xhr.status===200)
+<div>
+    <h1>Senzor <?=$sensor->serial_number?>, situat in <?=Db\Table\clusters::getInstance()->GetRecordById($sensor->cluster_id)->title?></h1>
+    <br>
+    <ul>
+        <?php
+        if( !empty($sensor_data) )
         {
-            if( xhr.responseText !== prevText )
+            /** @var  $data  Db\Table\DataTypes\hives_data_t*/
+            foreach($sensor_data as $data)
             {
-                document.getElementById("feed").innerHTML = xhr.responseText;
-                prevText = xhr.responseText;
+                echo sprintf("<li>[%s] volts_mv=%s weight_gm=%s</li>\n", $data->datetime, $data->volts_mv, $data->weight_gm);
             }
         }
-    }
-    function asyncAjax(method,url,qs,callback,callbackData)
-    {
-        var xmlhttp=new XMLHttpRequest();
-        //xmlhttp.cdat=callbackData;
-        if(method=="GET")
-        {
-            url+="?"+qs;
-        }
-        var cb=callback;
-        callback=function()
-        {
-            var xhr=xmlhttp;
-            //xhr.cdat=callbackData;
-            var cdat2=callbackData;
-            cb(xhr,cdat2);
-            return;
-        }
-        xmlhttp.open(method,url,true);
-        xmlhttp.onreadystatechange=callback;
-        if(method=="POST"){
-            xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-            xmlhttp.send(qs);
-        }
-        else
-        {
-            xmlhttp.send(null);
-        }
-    }
-    tc();
-</script>
-</body>
-</html>
+        ?>
+    </ul>
+</div>
+
+<?php require_once "footer.php"; ?>
 

@@ -4,6 +4,7 @@ if (!defined("INTERNAL_INCLUSION")) require_once "./core/config.php";
 
 abstract class APPL_ROUTES
 {
+    public const VIEW_SENSOR = "view-sensor";
 }
 
 if( !isset($ROUTER) )
@@ -15,5 +16,4 @@ if( !isset($ROUTER) )
 #   | |___ /  \  | | | |___|  _ <| |\  |
 #   |_____/_/\_\ |_| |_____|_| \_\_| \_|
 #
-/** @route /careers */
-//$ROUTER->get(APPL_ROUTES::CAREERS, static function() { exit(require APPL_BASE_PATH . "/careers.php"); });
+$ROUTER->get(APPL_ROUTES::VIEW_SENSOR, static function() { exit(require DOC_ROOT . "/view.php"); });

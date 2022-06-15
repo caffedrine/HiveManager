@@ -1,6 +1,8 @@
 <?php
 
 require_once "./core/config.php";
+require_once CORE_DATABASE_PATH . "/Database.php";
+require_once CORE_DATABASE_PATH . "/Database.logger_system.php";
 
 ?>
 
@@ -20,27 +22,7 @@ require_once "./core/config.php";
     <title>Vizualizare stupar</title>
 </head>
 
-<body>
-
-<nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-        <img src="/templates/default/assets/img/logo.png" height="50px" class="navbar-brand" alt="Stupar">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Acasa</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Grupuri</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Stupi</a></li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-</nav>
+<body class="container">
 
 <svg id="svg1" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" class="img-responsive" width="100%" height="100%" version="1.1" >
     <g  id="bee" transform="translate(1400,100)">
