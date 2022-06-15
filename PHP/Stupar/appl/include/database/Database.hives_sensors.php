@@ -34,5 +34,11 @@ namespace Db\Table
             }
             return self::$instance;
         }
+
+        public function GetBySerialNumber(string $serial_number): ?DataTypes\hives_sensors_t
+        {
+            $results = $this->GetRecordsByKeyVal("serial_number", $serial_number, 1);
+            return ((!empty($results) && is_array($results)) ? ($results[0]) : (null));
+        }
     }
 }

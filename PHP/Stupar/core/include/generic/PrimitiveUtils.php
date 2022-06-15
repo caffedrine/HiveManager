@@ -920,14 +920,3 @@ function GetBoolStr($anything): string
         return "true";
     return "false";
 }
-
-function IsNumericOrString($input, int $min_length, int $max_length)
-{
-    if ((!(is_string($input))) && (!is_numeric($input)))
-    {
-        return false;
-    }
-
-    $length = strlen((string)($input));
-    return !(($length > $max_length) || ($length < $min_length));
-}

@@ -10,7 +10,7 @@ namespace Db\Table\DataTypes
         public $component = "";
         public $category = "";
         public $gravity = "";
-        public $tag = "";
+        public $tags = "";
         public $description = "";
         public $call_stack = "";
         public $raw_data = "";

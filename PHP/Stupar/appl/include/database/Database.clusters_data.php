@@ -7,7 +7,8 @@ namespace Db\Table\DataTypes
         public ?int $id = null;
         public string $datetime;
         public int $cluster_sensor_id;
-        public int $voltage_mv;
+        public int $volts_mv;
+        public float $temperature_deg;
         public int $humidity_rh;
     }
 }
