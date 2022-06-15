@@ -2,11 +2,31 @@
 #include <base64.h>
 #include <ESP8266WiFi.h>
 
+#include "UrlEncode.h"
 #include "HttpWebRequest.h"
 
+// ID Senzor
+String SERIAL_NUMBER = "C000000001";
+
 // WiFi router username/password
-const char *ssid = "2G_Secured";
+const char *ssid = "2G";
 const char *password = "internatcamin";
+
+struct SenzorStup
+{
+	int volts_mv;
+	int weight_gm;
+};
+
+struct SenzorAmbiental
+{
+	int volts_mv;
+	float temperature_deg;
+	int himidity_rh;
+};
+
+SenzorStup valoriStup;
+SenzorAmbiental valoriAmbientale;
 
 void setup_wifi()
 {
@@ -22,11 +42,23 @@ void setup_wifi()
 
 void SendDataToCloud()
 {
-	String stup_id = "stup_01";
-	String data = "masa=1250, umiditate=1374, temperatura=12";
+	String data;
+	if( SERIAL_NUMBER.charAt(0) == 'C' )
+	{
+		// Date senzor ambiental
+		data = "volts_mv=" + String(valoriAmbientale.volts_mv);
+		data += "&temperature_deg=" + String(valoriAmbientale.temperature_deg);
+		data += "&humidity_rh=" + String(valoriAmbientale.himidity_rh);
+	}
+	else if( SERIAL_NUMBER.charAt(0) == 'S' )
+	{
+		// Date senzor stup
+		data = "volts_mv=" +  String(valoriStup.volts_mv);
+		data += "&weight_gm=" +  String(valoriStup.weight_gm);
+	}
 
 	// Send to cloud
-	String url = "https://stupar.254.ro/add.php?stup_id=" + stup_id + "&data=" + base64::encode(data);
+	String url = "https://stupar.254.ro/api/v1/add?sensor_id=" + SERIAL_NUMBER + "&data=" + base64::encode(data) + "&signature=dummy";
 	Serial.println("GET " + url);
 
 	// Send HTTP request and print response
@@ -43,10 +75,45 @@ void setup()
 	// Connect to WiFi AP
 	setup_wifi();
 
-	SendDataToCloud();
+	// Valori ambientale
+	valoriAmbientale.volts_mv = 5000;
+	valoriAmbientale.temperature_deg = 25;
+	valoriAmbientale.himidity_rh = 63;
+
+	// Valori stup
+	valoriStup.volts_mv = 5000;
+	valoriStup.weight_gm = 1500;
 }
 
+
+long long prevMillis = 0;
 void loop()
 {
+	// Send data to cloud every 10 minutes
+	if( millis() - prevMillis >= 1000 * 60 * 10 )
+	{
 
+		prevMillis = millis();
+
+		// Trimite valori ambientale in cloud
+		valoriAmbientale.volts_mv -= random(1, 3);
+		if (valoriAmbientale.volts_mv <= 0)
+			valoriAmbientale.volts_mv = 5000;
+		valoriAmbientale.temperature_deg -= (float)random(1, 5) / 10.0;
+		if (valoriAmbientale.temperature_deg <= 5)
+			valoriAmbientale.temperature_deg = 30;
+		valoriAmbientale.himidity_rh = random(35, 80);
+		SERIAL_NUMBER = "C000000001";
+		SendDataToCloud();
+
+		// Trimite valori stup in cloud
+		valoriStup.volts_mv -= random(1, 3);
+		if (valoriStup.volts_mv <= 0)
+			valoriStup.volts_mv = 5000;
+		valoriStup.weight_gm += random(1, 5);
+		if (valoriStup.weight_gm >= 7000)
+			valoriStup.weight_gm = 1500;
+		SERIAL_NUMBER = "S000000001";
+		SendDataToCloud();
+	}
 }
