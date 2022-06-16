@@ -41,3 +41,6 @@ if( defined('GLOBAL_DOWN_FOR_MAINTENANCE') && GLOBAL_DOWN_FOR_MAINTENANCE )
 {
     die("Down for maintenance. Please come back later");
 }
+
+# Set timezone of the script
+date_default_timezone_set("Europe/Bucharest");
