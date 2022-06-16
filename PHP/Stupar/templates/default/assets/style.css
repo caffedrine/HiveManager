@@ -1,7 +1,6 @@
 #page-body
 {
     position: relative;
-    z-index: 1;
 }
 
 #svg1
@@ -35,4 +34,17 @@
     0%{ transform:rotate(0deg); }
     50%{ transform:rotate(30deg); }
     0%{ transform:rotate(0deg); }
+}
+
+/* Used to align forms on external section of the website.*/
+.forms-box-full
+{
+    position: relative;
+    padding: 20px;
+    /*background-color: #f8f7f7;*/
+    max-width: 100%;
+    border: solid #e9eaea 2px;
+    -webkit-border-radius : 5px;
+    -moz-border-radius    : 5px;
+    border-radius         : 5px;
 }
