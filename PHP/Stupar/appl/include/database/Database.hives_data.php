@@ -34,9 +34,21 @@ namespace Db\Table
             return self::$instance;
         }
 
-        public function GetBySensorID(int $sensor_id)
+        public function GetBySensorID(int $sensor_id, string $past_date_limit = null, $limit = null)
         {
-            return $this->GetRecordsByKeyVal("hive_sensor_id", $sensor_id);
+            $Clauses = array
+            (
+                array('key' => 'hive_sensor_id',
+                        'comp' => '=',
+                        'val' => $sensor_id),
+            );
+
+            if( !empty($past_date_limit) )
+                $Clauses[] = array('key' => 'datetime',
+                    'comp' => '>=',
+                    'val' => $past_date_limit);
+
+            return $this->GetRecordsByKeysCompsVals($Clauses, $limit,);
         }
     }
 }

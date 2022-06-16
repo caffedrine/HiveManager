@@ -2,6 +2,8 @@
 
 require_once "./core/config.php";
 require_once CORE_INCLUDE_PATH  . "/generic/PrimitiveUtils.php";
+require_once CORE_INCLUDE_PATH  . "/classes/StdTypes.php";
+require_once CORE_INCLUDE_PATH  . "/classes/StdDateTime.php";
 require_once CORE_DATABASE_PATH . "/Database.php";
 require_once CORE_DATABASE_PATH . "/Database.logger_system.php";
 
@@ -15,10 +17,10 @@ require_once CORE_DATABASE_PATH . "/Database.logger_system.php";
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
     <!--  template css -->
-    <link href="/templates/default/assets/style.css" rel="stylesheet">
+    <link href="/templates/default/assets/style.css?cache_invalidator=<?=random_int(0, 999999) ?>" rel="stylesheet">
 
     <title>Vizualizare stupar</title>
 </head>
