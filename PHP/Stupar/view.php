@@ -112,7 +112,8 @@ $sensor_data = Db\Table\hives_data::getInstance()->GetBySensorID($sensor->id);
     </div>
 
 
-    <div class="forms-box-full mt-3">
+    <div class="forms-box-full mt-3 pt-0">
+        <h4 class="text-center">Date senzor stup, de la <?=$sensor_data[0]->datetime?> pana la <?=$sensor_data[count($sensor_data)-1]->datetime?></h4>
         <canvas id="hiveSensorChart"></canvas>
     </div>
 
@@ -134,6 +135,7 @@ $sensor_data = Db\Table\hives_data::getInstance()->GetBySensorID($sensor->id);
         {
             labels: labels,
             datasets: [{
+                //fill: true,
                 label: 'Weight [gm]',
                 yAxisID: 'y',
                 backgroundColor: 'rgb(255, 99, 132)',
@@ -172,82 +174,73 @@ $sensor_data = Db\Table\hives_data::getInstance()->GetBySensorID($sensor->id);
             }] // datasets
         };
 
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                responsive: true,
-                interaction:
-                {
-                    mode: 'index',
-                    intersect: false,
-                },
-                stacked: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Chart.js Line Chart - Multi Axis'
-                    }
-                },
-                scales:
-                {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: 'left',
-                        ticks: {
-                            // Include a dollar sign in the ticks
-                            callback: function(value, index, ticks) {
-                                return value + " gm";
-                            }
-                        }
-                    },
-                    y1: {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        ticks: {
-                            // Include a dollar sign in the ticks
-                            callback: function(value, index, ticks) {
-                                return value + " mV";
-                            }
-                        },
-                        // grid line settings
-                        grid: {
-                            drawOnChartArea: false, // only want the grid lines for one axis to show up
-                        },
-                    },
-                }
-            },
-            legend:
+        const config =
             {
-                display: true,
-                onClick: function(event, legendItem)
-                {
-                    console.log("tralala");
-
-                    var y_axis_id = myChart.data.datasets[legendItem.datasetIndex].yAxisID;
-                    if(y_axis_id.startsWith('TOGGLE'))
+                type: 'line',
+                data: data,
+                options:
                     {
-                        //find by name yaxis
-                        for(i=0;i<myChart.options.scales.yAxes.length;i++){
-                            if(myChart.options.scales.yAxes[i].id==y_axis_id)
+                        responsive: true,
+                        interaction:
                             {
-                                myChart.options.scales.yAxes[i].display = !myChart.options.scales.yAxes[i].display;
-                                myChart.data.datasets[legendItem.datasetIndex].hidden = !myChart.data.datasets[legendItem.datasetIndex].hidden;
-                                myChart.update();
+                                mode: 'index',
+                                intersect: false,
+                            },
+                        stacked: false,
+                        plugins: {
+                            legend: {
+                                // onClick: function(event, legendItem)
+                                // {
+                                //     var idx = legendItem.datasetIndex;
+                                //
+                                //     this.options.scales.yAxes[idx].display = !this.options.scales.yAxes[idx].display;
+                                //
+                                //     var meta = this.getDatasetMeta(idx);
+                                //     // See controller.isDatasetVisible comment
+                                //     meta.hidden = meta.hidden === null ? !this.data.datasets[idx].hidden : null;
+                                //
+                                //     this.update();
+                                // }
                             }
-                        }
-                    }
-                }
-            }
-        };
+                        },
+                        scales:
+                            {
+                                y: {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
+                                    ticks: {
+                                        // Include a dollar sign in the ticks
+                                        callback: function (value, index, ticks)
+                                        {
+                                            return value + " gm";
+                                        }
+                                    }
+                                },
+                                y1: {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'right',
+                                    ticks: {
+                                        // Include a dollar sign in the ticks
+                                        callback: function (value, index, ticks)
+                                        {
+                                            return value + " mV";
+                                        }
+                                    },
+                                    // grid line settings
+                                    grid: {
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+                                },
+                            },// scales
+                    }// options
+            };
 
         const myChart = new Chart(
             document.getElementById('hiveSensorChart'),
             config
         );
-
     </script>
 
 </div>
