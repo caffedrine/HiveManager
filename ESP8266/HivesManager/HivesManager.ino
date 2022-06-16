@@ -57,14 +57,28 @@ void SendDataToCloud()
 		data += "&weight_gm=" +  String(valoriStup.weight_gm);
 	}
 
+	// Check WiFi connection state
+	if (WiFi.status() != WL_CONNECTED)
+	{
+		int WaitSeconds = 0;
+		WiFi.begin(ssid, password);
+		while (WiFi.status() != WL_CONNECTED)
+		{
+			delay(500);
+			Serial.print(".");
+			if( ++WaitSeconds >= 40  ) // 20 seconds timeout
+				return;
+		}
+	}
+
 	// Send to cloud
 	String url = "https://stupar.254.ro/api/v1/add?sensor_id=" + SERIAL_NUMBER + "&data=" + base64::encode(data) + "&signature=dummy";
-	Serial.println("GET " + url);
+	//Serial.println("GET " + url);
 
 	// Send HTTP request and print response
 	HttpWebRequest http(url);
 	HttpWebResponse response = http.GET();
-	Serial.println(String(response.HttpCode) + " " + http.getProtocol() + http.getHost() + ":" + String(http.getPort()) + http.getPath() + "\n" + response.responseString);
+	Serial.println(String(response.HttpCode) + " GET " + http.getProtocol() + http.getHost() + ":" + String(http.getPort()) + http.getPath() + "\n" + response.responseString);
 }
 
 void setup()
@@ -86,13 +100,15 @@ void setup()
 }
 
 
-long long prevMillis = 0;
+uint64 prevMillis = 0;
 void loop()
 {
-	// Send data to cloud every 10 minutes
-	if( millis() - prevMillis >= 1000 * 60 * 10 )
+	if( millis() < prevMillis ) // Check for counter overflow
 	{
-
+		prevMillis = 0;
+	}
+	if( millis() - prevMillis >= 1000 * 60 * 10 ) 	// Send data to cloud every 10 minutes
+	{
 		prevMillis = millis();
 
 		// Trimite valori ambientale in cloud
