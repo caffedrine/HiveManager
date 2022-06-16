@@ -1,6 +1,7 @@
 <?php
 
 require_once "./core/config.php";
+require_once CORE_INCLUDE_PATH  . "/generic/PrimitiveUtils.php";
 require_once CORE_DATABASE_PATH . "/Database.php";
 require_once CORE_DATABASE_PATH . "/Database.logger_system.php";
 
