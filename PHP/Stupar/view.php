@@ -33,7 +33,7 @@ $sensor_data = Db\Table\hives_data::getInstance()->GetBySensorID($sensor->id);
     <hr>
 
     <!-- Data menu -->
-    <div class="row mt-3 justify-content-between align-items-center">
+    <div class="row mt-3 justify-content-between align-items-center just">
         <div class="col-auto">
             <!-- Menu for large screens -->
             <div class="d-none d-md-none d-lg-block">
