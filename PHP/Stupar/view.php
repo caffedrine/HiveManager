@@ -28,10 +28,11 @@ $sensor_data = Db\Table\hives_data::getInstance()->GetBySensorID($sensor->id);
 <div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
+    <!-- Title -->
     <h1>Senzor <?=$sensor->serial_number?>, situat in <?=Db\Table\clusters::getInstance()->GetRecordById($sensor->cluster_id)->title?></h1>
     <hr>
 
+    <!-- Data menu -->
     <div class="row mt-3 justify-content-between align-items-center">
         <div class="col-auto">
             <!-- Menu for large screens -->
@@ -130,12 +131,13 @@ $sensor_data = Db\Table\hives_data::getInstance()->GetBySensorID($sensor->id);
 
     </div>
 
-
+    <!-- Chart -->
     <div class="forms-box-full mt-3 pt-0">
         <h4 class="text-center">Date senzor stup, de la <?=$sensor_data[0]->datetime?> pana la <?=$sensor_data[count($sensor_data)-1]->datetime?></h4>
         <canvas id="hiveSensorChart"></canvas>
     </div>
 
+    <!-- Chart data -->
     <script>
         const labels = [
             <?php
