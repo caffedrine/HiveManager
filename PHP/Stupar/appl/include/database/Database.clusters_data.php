@@ -34,5 +34,10 @@ namespace Db\Table
             }
             return self::$instance;
         }
+
+        public function GetBySensorId(int $sensor_id)
+        {
+            return $this->GetRecordsByKeyVal("cluster_sensor_id", $sensor_id);
+        }
     }
 }

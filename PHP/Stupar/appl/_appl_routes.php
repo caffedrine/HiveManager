@@ -16,4 +16,4 @@ if( !isset($ROUTER) )
 #   | |___ /  \  | | | |___|  _ <| |\  |
 #   |_____/_/\_\ |_| |_____|_| \_\_| \_|
 #
-$ROUTER->get(APPL_ROUTES::VIEW_SENSOR, static function() { exit(require DOC_ROOT . "/view.php"); });
+$ROUTER->get(APPL_ROUTES::VIEW_SENSOR, static function() { exit(require DOC_ROOT . "/view-hive.php"); });
