@@ -41,5 +41,10 @@ namespace Db\Table
             return ((!empty($results) && is_array($results)) ? ($results[0]) : (null));
         }
 
+        public function GetAllByClusterId(int $cluster_id)
+        {
+            return $this->GetRecordsByKeyVal("cluster_id", $cluster_id);
+        }
+
     }
 }
