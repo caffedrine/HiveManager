@@ -7,16 +7,48 @@ if( !isset($sensor) )
 }
 
 // Rework data as date => val
-$sensor_data = Db\Table\hives_data::getInstance()->GetBySensorID($sensor->id);
-
+$sensor_data = Db\Table\hives_data::getInstance()->GetAllBySensorID_HourlyAvg($sensor->id, StdDateTime::Curr()->SubstractDays(30)->GetDateTime());
 
 ?>
 
 <div class="" id="chart-hive-<?=$sensor->serial_number?>">
     <!-- Chart -->
     <div class="forms-box-full mt-3 pt-1">
+        <?php if(!empty($sensor_data)) { ?>
         <h5 class="text-center">Date senzor stup, de la <?=$sensor_data[0]->datetime?> pana la <?=$sensor_data[count($sensor_data)-1]->datetime?></h5>
         <canvas id="hiveSensorChart_<?=$sensor->serial_number?>"></canvas>
+
+            <!-- Menu for large screens -->
+            <div class="d-none d-md-none d-lg-block text-center">
+                <div class="btn-group" role="group" aria-label="Select history">
+                    <input type="checkbox" class="btn-check" name="btncheckbox" id="btncheckbox1" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-secondary" for="btncheckbox1">Weight</label>
+
+                    <input type="checkbox" class="btn-check" name="btncheckbox" id="btncheckbox2" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-secondary" for="btncheckbox2">Temperature</label>
+
+                    <input type="checkbox" class="btn-check" name="btncheckbox" id="btncheckbox3" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-secondary" for="btncheckbox3">Humidity</label>
+
+                    <input type="checkbox" class="btn-check" name="btncheckbox" id="btncheckbox4" autocomplete="off" checked>
+                    <label class="btn btn-sm btn-outline-secondary" for="btncheckbox4">Voltage hive</label>
+
+                    <input type="checkbox" class="btn-check" name="btncheckbox" id="btncheckbox5" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-secondary" for="btncheckbox5">Voltage env</label>
+                </div>
+            </div>
+
+            <!-- dropdown menu for mobile -->
+            <select class="form-select d-lg-none" aria-label="Default select example" multiple>
+                <option value="1">6 Hours</option>
+                <option value="2">24 Hours</option>
+                <option value="3">7 Days</option>
+                <option value="4" selected>30 Days</option>
+                <option value="5">3 Months</option>
+            </select>
+        <?php } else { ?>
+            <p>Nu exista date pentru acest stup</p>
+        <?php }?>
     </div>
 
     <!-- Chart data for hive -->
