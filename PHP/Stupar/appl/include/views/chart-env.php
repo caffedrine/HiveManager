@@ -7,7 +7,7 @@ if( !isset($sensor) )
 }
 
 // Rework data as date => val
-$sensor_data = Db\Table\clusters_data::getInstance()->GetBySensorID($sensor->id);
+$sensor_data = Db\Table\clusters_data::getInstance()->GetAllBySensorID_HourlyAvg($sensor->id, StdDateTime::Curr()->SubstractDays(30)->GetDateTime());
 
 ?>
 
