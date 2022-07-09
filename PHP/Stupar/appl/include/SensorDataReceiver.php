@@ -35,7 +35,7 @@ class SensorDataReceiver
         # Validate sensor ID
         if( $ret->GetStatus() )
         {
-            if( !Utils_IsAlphanumeric($sensor_serial_number) || strlen($sensor_serial_number) != 10 )
+            if( !Utils_IsAlphanumeric($sensor_serial_number) || strlen($sensor_serial_number) !== 10 )
             {
                 $ret->SetStatusMessage(false, "invalid serial number");
             }
